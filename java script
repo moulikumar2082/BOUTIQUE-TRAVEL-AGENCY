@@ -1,0 +1,11 @@
+function submitForm() {
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const message = document.getElementById('message').value;
+
+    // You can add logic here to handle the form data (e.g., send it to a server)
+    console.log(`Name: ${name}, Email: ${email}, Message: ${message}`);
+
+    // For now, let's just alert the user
+    alert('Form submitted successfully!');
+}
