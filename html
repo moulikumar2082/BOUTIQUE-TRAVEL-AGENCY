@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Boutique Travel Agency</title>
+</head>
+<body>
+    <header>
+        <h1>Boutique Travel Agency</h1>
+        <p>Your gateway to unforgettable experiences</p>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Destinations</a></li>
+            <li><a href="#">Packages</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+    </nav>
+
+    <section id="main-content">
+        <h2>Welcome to Our Boutique Travel Agency</h2>
+        <p>Discover unique and personalized travel experiences tailored just for you.</p>
+
+        <h3>Featured Destinations</h3>
+        <ul>
+            <li>Paris, France</li>
+            <li>Santorini, Greece</li>
+            <li>Kyoto, Japan</li>
+        </ul>
+    </section>
+
+    <section id="contact-form">
+        <h3>Contact Us</h3>
+        <form id="contactForm">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="message">Message:</label>
+            <textarea id="message" name="message" rows="4" required></textarea>
+
+            <button type="button" onclick="submitForm()">Submit</button>
+        </form>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Boutique Travel Agency</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
