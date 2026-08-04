@@ -34,12 +34,15 @@ function checkExistingSession() {
         try {
             currentUser = JSON.parse(savedUser);
             wishlist = JSON.parse(localStorage.getItem(`bt_wishlist_${currentUser.id}`) || '[]');
-            userBookings = JSON.parse(localStorage.getItem(`bt_bookings_${currentUser.id}`) || '[]');
+            userBookings = JSON.parse(localStorage.getItem(`bt_bookings_${currentUser.id}`) || localStorage.getItem('bt_global_bookings') || '[]');
             updateAuthUI();
             loadUserDataFromDB();
         } catch (e) {
             localStorage.removeItem('bt_user');
         }
+    } else {
+        userBookings = JSON.parse(localStorage.getItem('bt_global_bookings') || '[]');
+        updateBookingsUI();
     }
 }
 
@@ -303,9 +306,14 @@ function updateBookingsUI() {
             listEl.innerHTML = '<li>No active bookings found. Book a tour package to save it here forever.</li>';
         } else {
             listEl.innerHTML = userBookings.map(b => `
-                <li>
-                    🌴 <strong>${b.package_name}</strong><br>
-                    <small style="color:#D4AF37;">Cost: ₹${(b.price || 25000).toLocaleString('en-IN')} | Guests: ${b.guests || 2} | Status: ${b.status || 'Confirmed'}</small>
+                <li style="padding: 0.8rem 0; border-bottom:1px solid rgba(255,255,255,0.08);">
+                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem;">
+                        <div>
+                            🌴 <strong style="color:#FFF; font-size:1rem;">${b.package_name}</strong><br>
+                            <small style="color:#D4AF37;">Cost: ₹${(b.price || 25000).toLocaleString('en-IN')} | Guests: ${b.guests || 2} | Status: <span style="color:#4ADE80; font-weight:bold;">${b.status || 'Confirmed'}</span></small>
+                        </div>
+                        <button class="btn-outline" style="font-size:0.75rem; padding:0.35rem 0.7rem;" onclick="downloadPDFItinerary('${b.package_name}')">📥 PDF Voucher</button>
+                    </div>
                 </li>
             `).join('');
         }
@@ -716,7 +724,8 @@ function closeBookingModal(event) {
 async function handleModalSubmit(event) {
     event.preventDefault();
     const dest = document.getElementById('modalDestInput').value;
-    const name = document.getElementById('modalName').value;
+    const name = document.getElementById('modalName').value.trim() || 'Valued Traveler';
+    const phone = document.getElementById('modalPhone').value.trim() || '+91 98765 43210';
     const guests = parseInt(document.getElementById('modalGuests').value || '1', 10);
     const price = parseInt(document.getElementById('modalDestInput').getAttribute('data-price') || '25000', 10);
 
@@ -725,10 +734,13 @@ async function handleModalSubmit(event) {
         package_name: dest,
         price,
         guests,
-        status: 'Confirmed'
+        status: 'Confirmed ✅'
     };
 
     userBookings.unshift(bookingItem);
+
+    // Always save globally
+    localStorage.setItem('bt_global_bookings', JSON.stringify(userBookings));
 
     if (currentUser) {
         localStorage.setItem(`bt_bookings_${currentUser.id}`, JSON.stringify(userBookings));
@@ -745,11 +757,40 @@ async function handleModalSubmit(event) {
                 })
             });
         } catch (err) {}
+    } else {
+        // Auto-create guest profile so booking is permanently saved to session
+        currentUser = {
+            id: Date.now(),
+            name: name,
+            phone: phone,
+            email: 'guest@boutiquetravel.com'
+        };
+        localStorage.setItem('bt_user', JSON.stringify(currentUser));
+        localStorage.setItem(`bt_bookings_${currentUser.id}`, JSON.stringify(userBookings));
+        updateAuthUI();
     }
 
-    updateBookingsUI();
+    // Also dispatch email notification to moulikumar2082@gmail.com
+    try {
+        fetch('https://formsubmit.co/ajax/mowlikumar2082@gmail.com', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify({
+                _subject: `New Tour Package Booking: ${dest} from ${name}`,
+                "Guest Name": name,
+                "Phone": phone,
+                "Package": dest,
+                "Price": `₹${price.toLocaleString('en-IN')}`,
+                "Guests": guests,
+                "_captcha": "false",
+                "_template": "table"
+            })
+        }).catch(e => {});
+    } catch(e) {}
+
     closeBookingModal();
-    showToast(`Namaste ${name}! Your booking request for ${dest} has been saved.`);
+    showToast(`Namaste ${name}! Your booking for ${dest} has been saved to your account history.`);
+    openDashboardModal();
 }
 
 // Dashboard Modal
@@ -758,6 +799,8 @@ function openDashboardModal() {
         openAuthModal();
         return;
     }
+    updateWishlistUI();
+    updateBookingsUI();
     document.getElementById('dashboardBackdrop').classList.add('active');
     document.body.style.overflow = 'hidden';
 }
