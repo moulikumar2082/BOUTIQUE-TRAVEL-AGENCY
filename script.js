@@ -493,12 +493,197 @@ function showDestinationDetails(destName) {
     openBookingModal(`${destName} Regional Tour Package`, 25000);
 }
 
-// Download PDF Itinerary Simulation
-function downloadPDFItinerary(destName = 'Indian Package') {
-    showToast(`Generating & downloading PDF itinerary for ${destName}...`);
+// Real Printable PDF Itinerary & Voucher Generator
+function downloadPDFItinerary(packageName = 'Incredible India Signature Package') {
+    showToast(`Generating official PDF Voucher for ${packageName}...`);
+
+    const clientName = currentUser ? currentUser.name : 'Valued Traveler';
+    const clientPhone = currentUser ? currentUser.phone : '+91 98765 43210';
+    const clientEmail = currentUser ? currentUser.email : 'concierge@royaltrailsindia.com';
+    const refId = 'RTI-' + Math.floor(100000 + Math.random() * 900000);
+    const dateStr = new Date().toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' });
+
+    const pdfWindow = window.open('', '_blank');
+    if (!pdfWindow) {
+        showToast('Please allow popups to open the PDF Voucher window.');
+        return;
+    }
+
+    pdfWindow.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Official Travel Voucher - ${packageName}</title>
+            <style>
+                body { font-family: 'Helvetica Neue', Arial, sans-serif; color: #1E293B; margin: 0; padding: 40px; background: #FFF; }
+                .voucher-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #D4AF37; padding-bottom: 20px; margin-bottom: 30px; }
+                .brand { font-size: 24px; font-weight: bold; color: #070B12; letter-spacing: 1px; }
+                .brand span { color: #D4AF37; }
+                .ref-box { text-align: right; font-size: 13px; color: #64748B; }
+                .ref-badge { display: inline-block; background: #F8FAFC; border: 1px solid #CBD5E1; font-weight: bold; color: #0F172A; padding: 4px 10px; border-radius: 4px; margin-top: 5px; }
+                .section-title { font-size: 16px; font-weight: bold; color: #0F172A; text-transform: uppercase; letter-spacing: 1px; border-left: 4px solid #D4AF37; padding-left: 10px; margin: 25px 0 15px 0; }
+                .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; background: #F8FAFC; padding: 20px; border-radius: 8px; font-size: 14px; }
+                .info-item strong { color: #475569; display: block; font-size: 12px; text-transform: uppercase; margin-bottom: 3px; }
+                .itinerary-list { margin: 0; padding-left: 20px; font-size: 14px; line-height: 1.8; }
+                .inclusions-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 13px; margin-top: 10px; }
+                .inclusion-item { background: #EDF2F7; padding: 8px 12px; border-radius: 6px; }
+                .footer-notice { margin-top: 40px; padding-top: 20px; border-top: 1px solid #E2E8F0; font-size: 12px; color: #94A3B8; text-align: center; }
+                .btn-print { background: #D4AF37; color: #000; border: none; font-weight: bold; padding: 12px 24px; font-size: 14px; border-radius: 6px; cursor: pointer; margin-bottom: 20px; }
+                @media print { .btn-print { display: none; } }
+            </style>
+        </head>
+        <body>
+            <button class="btn-print" onclick="window.print()">🖨️ Save as PDF / Print Voucher</button>
+
+            <div class="voucher-header">
+                <div class="brand"><span>BOUTIQUE</span> TRAVEL AGENCY</div>
+                <div class="ref-box">
+                    <div>Issued Date: <strong>${dateStr}</strong></div>
+                    <div class="ref-badge">VOUCHER REF: ${refId}</div>
+                </div>
+            </div>
+
+            <h2 style="margin: 0 0 10px 0; font-size: 22px; color: #0F172A;">${packageName}</h2>
+            <p style="color: #64748B; margin-top: 0; font-size: 14px;">Incredible India Luxury Domestic Itinerary & Confirmation Voucher</p>
+
+            <div class="section-title">Guest Details</div>
+            <div class="info-grid">
+                <div class="info-item"><strong>Primary Guest Name</strong> ${clientName}</div>
+                <div class="info-item"><strong>Contact Phone / WhatsApp</strong> ${clientPhone}</div>
+                <div class="info-item"><strong>Email Address</strong> ${clientEmail}</div>
+                <div class="info-item"><strong>Booking Status</strong> <span style="color: #16A34A; font-weight: bold;">VERIFIED CONFIRMED</span></div>
+            </div>
+
+            <div class="section-title">Package Inclusions</div>
+            <div class="inclusions-grid">
+                <div class="inclusion-item">✨ 4-Star / 5-Star Heritage Stay</div>
+                <div class="inclusion-item">🚗 Private Sanitized AC Chauffeur SUV</div>
+                <div class="inclusion-item">🍳 Daily Complimentary Gourmet Breakfast</div>
+                <div class="inclusion-item">🧑‍🌾 Government Certified Local Guide</div>
+                <div class="inclusion-item">✈️ VIP Airport Clearance & Transfers</div>
+                <div class="inclusion-item">🛎️ 24/7 Dedicated Ground Host</div>
+            </div>
+
+            <div class="section-title">Day-by-Day Tour Highlights</div>
+            <ol class="itinerary-list">
+                <li><strong>Day 1:</strong> VIP Airport arrival reception & luxury hotel check-in.</li>
+                <li><strong>Day 2:</strong> Guided morning heritage tour & private sunset cruise experience.</li>
+                <li><strong>Day 3:</strong> Scenic valley drive & local culinary wine/food tasting session.</li>
+                <li><strong>Day 4:</strong> Exclusive shopping excursion & traditional folk cultural evening.</li>
+                <li><strong>Day 5:</strong> Leisure morning breakfast, hotel checkout & airport transfer.</li>
+            </ol>
+
+            <div class="footer-notice">
+                Official Document issued by BOUTIQUE TRAVEL AGENCY (Royal Trails India)<br>
+                For 24/7 Concierge Support: +91 98765 43210 | Email: concierge@royaltrailsindia.com
+            </div>
+        </body>
+        </html>
+    `);
+
+    pdfWindow.document.close();
     setTimeout(() => {
-        alert(`📄 PDF Itinerary Downloaded: ${destName}_Boutique_Travel_Itinerary.pdf`);
-    }, 1000);
+        pdfWindow.print();
+    }, 500);
+}
+
+// Travel Guide Modal Functions
+function openGuideModal(guideKey) {
+    const backdrop = document.getElementById('guideModalBackdrop');
+    const badge = document.getElementById('guideBadge');
+    const title = document.getElementById('guideTitle');
+    const body = document.getElementById('guideBody');
+
+    const guides = {
+        kashmir: {
+            badge: "NORTH INDIA GUIDE",
+            title: "Best Time to Visit Kashmir: Snow vs Blossom Season",
+            html: `
+                <img src="images/kashmir_real.jpg" style="width:100%; height:220px; object-fit:cover; border-radius:12px; margin-bottom:1.2rem;">
+                <p>Kashmir is a year-round paradise, but your travel month dictates your experience:</p>
+                <h4 style="color:#D4AF37; margin:1rem 0 0.4rem 0;">❄️ Winter Snow Season (December – March)</h4>
+                <p>Ideal for snow sports lovers! Gulmarg transforms into Asia's premier skiing destination with Gondola Phase 2 reaching 13,780 feet. Dal Lake experiences morning ice crusts and houseboats offer traditional <em>Kangri</em> room heating.</p>
+                <h4 style="color:#D4AF37; margin:1rem 0 0.4rem 0;">🌸 Spring & Summer Blossom (April – August)</h4>
+                <p>Srinagar's Indira Gandhi Memorial Tulip Garden blooms with 1.5 million tulips. Sonamarg and Pahalgam offer lush pine valley pony rides and rafting along the Lidder River.</p>
+                <h4 style="color:#D4AF37; margin:1rem 0 0.4rem 0;">💡 Local Packing Tip</h4>
+                <p>Even in summer, evening temperatures in Gulmarg drop to 10°C. Carry light thermals and a waterproof jacket.</p>
+            `
+        },
+        goa: {
+            badge: "WEST INDIA GUIDE",
+            title: "Goa Luxury & Budget Travel Guide 2026",
+            html: `
+                <img src="images/goa_real.jpg" style="width:100%; height:220px; object-fit:cover; border-radius:12px; margin-bottom:1.2rem;">
+                <p>Goa offers two distinct personalities depending on where you stay:</p>
+                <h4 style="color:#D4AF37; margin:1rem 0 0.4rem 0;">🏖️ South Goa: Quiet Luxury & Private Beaches</h4>
+                <p>Head to Mobor, Varca, and Palolem for 5-star beachfront resorts, tranquil sunbeds, and quiet catamaran sunset cruises along the Sal River.</p>
+                <h4 style="color:#D4AF37; margin:1rem 0 0.4rem 0;">🎉 North Goa: Nightlife & Heritage Architecture</h4>
+                <p>Explore Panjim's Latin Quarter (Fontainhas) with Portuguese villas, water sports at Calangute, and luxury casino dining along the Mandovi river.</p>
+            `
+        },
+        kerala: {
+            badge: "CULINARY GUIDE",
+            title: "Authentic Kerala Spice & Seafood Food Guide",
+            html: `
+                <img src="images/kerala_real.jpg" style="width:100%; height:220px; object-fit:cover; border-radius:12px; margin-bottom:1.2rem;">
+                <p>Kerala's culinary heritage combines fresh coconut, black pepper, cardamoms, and coastal seafood:</p>
+                <h4 style="color:#D4AF37; margin:1rem 0 0.4rem 0;">🍱 Traditional Kerala Sadhya</h4>
+                <p>A vegetarian feast served on a banana leaf featuring up to 26 dishes including Avial, Thoran, Parippu, and hot Palada Payasam.</p>
+                <h4 style="color:#D4AF37; margin:1rem 0 0.4rem 0;">🐟 Karimeen Pollichathu</h4>
+                <p>Pearlspot fish marinated in Shallots, Malabar tamarind, and ginger, wrapped in banana leaves and slow-grilled on coal.</p>
+            `
+        },
+        ladakh: {
+            badge: "ADVENTURE GUIDE",
+            title: "Essential Ladakh Packing List & Oxygen Acclimatization",
+            html: `
+                <img src="images/ladakh_real.jpg" style="width:100%; height:220px; object-fit:cover; border-radius:12px; margin-bottom:1.2rem;">
+                <p>Traveling to high altitudes (10,000+ ft) requires proper preparation:</p>
+                <h4 style="color:#D4AF37; margin:1rem 0 0.4rem 0;">🏔️ 36-Hour Mandatory Acclimatization</h4>
+                <p>Upon landing at Leh Airport (10,682 ft), rest completely for 24–36 hours before driving up Khardung La Pass (18,380 ft). Stay hydrated and avoid strenuous exertion.</p>
+                <h4 style="color:#D4AF37; margin:1rem 0 0.4rem 0;">🎒 Essential Gear Checklist</h4>
+                <p>Heavy down jacket, thermal innerwear, UV protection sunglasses, high-SPF sunscreen, Diamox medication, and portable power banks.</p>
+            `
+        },
+        rajasthan: {
+            badge: "CULTURE GUIDE",
+            title: "Rajasthan Royal Forts & Palace Etiquette Tips",
+            html: `
+                <img src="images/rajasthan_real.jpg" style="width:100%; height:220px; object-fit:cover; border-radius:12px; margin-bottom:1.2rem;">
+                <p>Experience the royal hospitality of India's desert land:</p>
+                <h4 style="color:#D4AF37; margin:1rem 0 0.4rem 0;">🏰 Sunrise Angles & Photography Tips</h4>
+                <p>Visit Amber Fort in Jaipur at 8:00 AM for soft morning lighting over Maota Lake. Book sunset Lake Pichola boat rides in Udaipur 48 hours in advance.</p>
+            `
+        },
+        honeymoon: {
+            badge: "ROMANCE GUIDE",
+            title: "Top 5 Romantic Honeymoon Destinations in India",
+            html: `
+                <img src="images/kashmir_real.jpg" style="width:100%; height:220px; object-fit:cover; border-radius:12px; margin-bottom:1.2rem;">
+                <p>Our top recommended romantic escapes for couples:</p>
+                <ol style="line-height:1.8; padding-left:1.2rem;">
+                    <li><strong>Srinagar Houseboat:</strong> Private evening Shikara rides on Dal Lake.</li>
+                    <li><strong>Udaipur Lake Palaces:</strong> Dinner overlooking glowing water reflections.</li>
+                    <li><strong>Alleppey Houseboat:</strong> Floating luxury suite in palm backwaters.</li>
+                    <li><strong>Andaman Havelock:</strong> Sunset walks along Radhanagar's white sand.</li>
+                </ol>
+            `
+        }
+    };
+
+    const g = guides[guideKey] || guides['kashmir'];
+    badge.textContent = g.badge;
+    title.textContent = g.title;
+    body.innerHTML = g.html;
+
+    backdrop.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeGuideModal(event) {
+    const backdrop = document.getElementById('guideModalBackdrop');
+    backdrop.classList.remove('active');
+    document.body.style.overflow = 'auto';
 }
 
 // Booking Modal

@@ -462,32 +462,32 @@
             </div>
 
             <div class="blog-grid">
-                <article class="blog-card" onclick="alert('Opening Kashmir Travel Guide...')">
+                <article class="blog-card" onclick="openGuideModal('kashmir')">
                     <div class="blog-tag">North India</div>
                     <h3>Best Time to Visit Kashmir: Snow vs Blossom Season</h3>
                     <p>Learn when to experience Sonamarg snow sports versus Gulmarg green tulip gardens.</p>
                 </article>
-                <article class="blog-card" onclick="alert('Opening Goa Budget Guide...')">
+                <article class="blog-card" onclick="openGuideModal('goa')">
                     <div class="blog-tag">West India</div>
                     <h3>Goa Luxury & Budget Guide 2026</h3>
                     <p>Where to find private beaches in South Goa away from noisy commercial crowds.</p>
                 </article>
-                <article class="blog-card" onclick="alert('Opening Kerala Food Guide...')">
+                <article class="blog-card" onclick="openGuideModal('kerala')">
                     <div class="blog-tag">Culinary</div>
                     <h3>Authentic Kerala Spice & Seafood Food Guide</h3>
                     <p>Top traditional Sadhya feasts and backwater Toddy shop dining experiences.</p>
                 </article>
-                <article class="blog-card" onclick="alert('Opening Ladakh Packing List...')">
+                <article class="blog-card" onclick="openGuideModal('ladakh')">
                     <div class="blog-tag">Adventure</div>
                     <h3>Essential Ladakh Packing List & Oxygen Tips</h3>
                     <p>How to acclimatize properly in Leh and gear needed for Pangong Tso night camps.</p>
                 </article>
-                <article class="blog-card" onclick="alert('Opening Rajasthan Travel Tips...')">
+                <article class="blog-card" onclick="openGuideModal('rajasthan')">
                     <div class="blog-tag">Culture</div>
                     <h3>Rajasthan Royal Forts & Palace Etiquette Tips</h3>
                     <p>Insider tricks for photogenic sunrise angles at Amber Fort and Lake Pichola.</p>
                 </article>
-                <article class="blog-card" onclick="alert('Opening Honeymoon Guide...')">
+                <article class="blog-card" onclick="openGuideModal('honeymoon')">
                     <div class="blog-tag">Honeymoon ❤️</div>
                     <h3>Top 5 Romantic Honeymoon Destinations in India</h3>
                     <p>Comparing Kashmir houseboats, Alleppey backwaters, and Udaipur lake palaces.</p>
@@ -745,6 +745,17 @@
                 </div>
                 <button class="btn-outline full-width" style="margin-top:1.8rem; border-color:#FF5A5F; color:#FF5A5F;" onclick="handleLogout()">🚪 Logout Account</button>
             </div>
+        </div>
+    <!-- Travel Guide Modal -->
+    <div class="modal-backdrop" id="guideModalBackdrop" onclick="closeGuideModal(event)">
+        <div class="modal" onclick="event.stopPropagation()" style="max-width:680px; max-height:85vh; overflow-y:auto;">
+            <button class="modal-close" onclick="closeGuideModal(event)">&times;</button>
+            <div id="guideModalContent">
+                <span class="badge" id="guideBadge">TRAVEL GUIDE</span>
+                <h2 id="guideTitle" style="font-size:1.8rem; margin:0.4rem 0 1rem 0;">Guide Title</h2>
+                <div id="guideBody" style="line-height:1.7; font-size:0.95rem; color:#CBD5E1;"></div>
+            </div>
+            <button class="btn-primary full-width" style="margin-top:1.5rem;" onclick="closeGuideModal()">Close Guide</button>
         </div>
     </div>
 
