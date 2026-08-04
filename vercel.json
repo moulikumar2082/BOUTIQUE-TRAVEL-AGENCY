@@ -1,0 +1,8 @@
+{
+  "version": 2,
+  "name": "boutique-travel-agency",
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
