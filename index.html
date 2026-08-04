@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Royal Trails India - Premium boutique domestic travel experiences across North, South, West, East India & Islands. Book luxury packages, heritage stays, and custom itineraries.">
+    <title>BOUTIQUE TRAVEL AGENCY | Royal Trails India</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <span class="logo-accent">BOUTIQUE</span> TRAVEL AGENCY
+            </a>
+            <nav class="nav-links">
+                <a href="#packages">Popular Packages</a>
+                <a href="#destinations">Destinations</a>
+                <a href="#experiences">Services</a>
+                <a href="#tools">AI Planner & Tools</a>
+                <a href="#about">Why Us</a>
+                <a href="#blog">Travel Guides</a>
+                <button class="nav-btn-secondary" id="authNavBtn" onclick="openAuthModal()">🔑 Login / Register</button>
+                <button class="nav-btn-secondary" id="userProfileBtn" onclick="openDashboardModal()" style="display:none;">👤 <span id="userNameHeader">Account</span></button>
+                <a href="#contact" class="nav-cta-btn">Book Journey</a>
+            </nav>
+            <button class="mobile-toggle" id="mobileToggle" onclick="toggleMobileNav()" aria-label="Toggle Navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" style="background-image: url('images/rajasthan_real.jpg');">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <span class="hero-subtitle">BOUTIQUE TRAVEL AGENCY • INCREDIBLE INDIA</span>
+            <h1 class="hero-title">Discover The Royal Majesty Of India</h1>
+            <p class="hero-description">Experience handcrafted luxury itineraries, heritage palaces, pristine backwaters, and high-altitude Himalayan retreats.</p>
+
+            <!-- Search & Filter Widget -->
+            <div class="search-widget">
+                <div class="search-field">
+                    <label for="dest-select">Region / Zone</label>
+                    <select id="dest-select">
+                        <option value="all">All India</option>
+                        <option value="north">North India (Kashmir, Ladakh, HP)</option>
+                        <option value="south">South India (Kerala, TN, Karnataka)</option>
+                        <option value="west">West India (Goa, Rajasthan, Gujarat)</option>
+                        <option value="east">East India (Sikkim, Meghalaya)</option>
+                        <option value="islands">Islands (Andaman, Lakshadweep)</option>
+                    </select>
+                </div>
+                <div class="search-field">
+                    <label for="type-select">Package Category</label>
+                    <select id="type-select">
+                        <option value="all">All Types</option>
+                        <option value="honeymoon">Honeymoon Packages ❤️</option>
+                        <option value="luxury">Royal Luxury</option>
+                        <option value="family">Family Tours</option>
+                        <option value="adventure">Adventure & Wildlife</option>
+                        <option value="temple">Temple & Heritage</option>
+                    </select>
+                </div>
+                <div class="search-field">
+                    <label for="budget-select">Max Budget (₹)</label>
+                    <select id="budget-select">
+                        <option value="all">Any Budget</option>
+                        <option value="20000">Under ₹20,000</option>
+                        <option value="30000">Under ₹30,000</option>
+                        <option value="40000">Under ₹40,000</option>
+                    </select>
+                </div>
+                <button class="btn-primary search-btn" onclick="filterPackages()">Search Tours</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Popular Tour Packages Section -->
+    <section class="section packages-section" id="packages">
+        <div class="container">
+            <div class="section-header text-center">
+                <span class="badge">SIGNATURE TOUR PACKAGES</span>
+                <h2>Most Popular Indian Escapes</h2>
+                <p>Handcrafted journeys with guaranteed luxury stays, transfers, and private guided excursions.</p>
+            </div>
+
+            <!-- Package Grid -->
+            <div class="destinations-grid" id="packagesGrid">
+                
+                <!-- Package 1: Kashmir -->
+                <div class="destination-card" data-region="north" data-type="honeymoon luxury" data-price="24999">
+                    <div class="card-img-wrapper">
+                        <img src="images/kashmir_real.jpg" alt="Kashmir Paradise Dal Lake" loading="lazy">
+                        <span class="card-tag">Honeymoon ❤️</span>
+                        <div class="card-rating">★ 4.9 (420 reviews)</div>
+                    </div>
+                    <div class="card-body">
+                        <span class="card-location">North India • 5 Days / 4 Nights</span>
+                        <h3 class="card-title">Kashmir Paradise & Shikara Cruise</h3>
+                        <p class="card-desc">Srinagar Dal Lake luxury houseboat stay, Gulmarg gondola ride, Pahalgam pine valley, and Sonamarg glacier drive.</p>
+                        <div class="card-footer">
+                            <div class="price">Price: <span>₹24,999</span> / person</div>
+                            <div class="card-actions">
+                                <button class="btn-wishlist" onclick="toggleWishlist('Kashmir Paradise', event)">❤️</button>
+                                <button class="btn-outline" onclick="openBookingModal('Kashmir Paradise', 24999)">Book Now</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Package 2: Kerala -->
+                <div class="destination-card" data-region="south" data-type="family luxury" data-price="18999">
+                    <div class="card-img-wrapper">
+                        <img src="images/kerala_real.jpg" alt="Kerala Backwaters Houseboat" loading="lazy">
+                        <span class="card-tag">Family & Wellness</span>
+                        <div class="card-rating">★ 5.0 (580 reviews)</div>
+                    </div>
+                    <div class="card-body">
+                        <span class="card-location">South India • 4 Days / 3 Nights</span>
+                        <h3 class="card-title">Kerala Backwaters & Luxury Houseboat</h3>
+                        <p class="card-desc">Munnar tea gardens, Alleppey private AC luxury houseboat cruise, spice plantation tour, and Ayurvedic massage.</p>
+                        <div class="card-footer">
+                            <div class="price">Price: <span>₹18,999</span> / person</div>
+                            <div class="card-actions">
+                                <button class="btn-wishlist" onclick="toggleWishlist('Kerala Backwaters', event)">❤️</button>
+                                <button class="btn-outline" onclick="openBookingModal('Kerala Backwaters', 18999)">Book Now</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Package 3: Goa -->
+                <div class="destination-card" data-region="west" data-type="honeymoon family" data-price="15999">
+                    <div class="card-img-wrapper">
+                        <img src="images/goa_real.jpg" alt="Goa Beach Resort" loading="lazy">
+                        <span class="card-tag">Beach Retreat</span>
+                        <div class="card-rating">★ 4.8 (610 reviews)</div>
+                    </div>
+                    <div class="card-body">
+                        <span class="card-location">West India • 3 Days / 2 Nights</span>
+                        <h3 class="card-title">Goa Beachfront Villa & Sunset Yacht</h3>
+                        <p class="card-desc">5-Star South Goa resort stay, Mandovi river luxury catamaran sunset cruise, water sports at Calangute, and Latin Quarter walk.</p>
+                        <div class="card-footer">
+                            <div class="price">Price: <span>₹15,999</span> / person</div>
+                            <div class="card-actions">
+                                <button class="btn-wishlist" onclick="toggleWishlist('Goa Luxury Escape', event)">❤️</button>
+                                <button class="btn-outline" onclick="openBookingModal('Goa Luxury Escape', 15999)">Book Now</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Package 4: Rajasthan -->
+                <div class="destination-card" data-region="west" data-type="luxury temple" data-price="32999">
+                    <div class="card-img-wrapper">
+                        <img src="images/rajasthan_real.jpg" alt="Rajasthan Royal Palace" loading="lazy">
+                        <span class="card-tag">Heritage Royal</span>
+                        <div class="card-rating">★ 5.0 (390 reviews)</div>
+                    </div>
+                    <div class="card-body">
+                        <span class="card-location">West India • 6 Days / 5 Nights</span>
+                        <h3 class="card-title">Rajasthan Royal Palace Trail</h3>
+                        <p class="card-desc">Jaipur Amber Fort, Udaipur Lake Palace dinner, Jodhpur Blue City tour, and luxury desert glamping in Jaisalmer under stars.</p>
+                        <div class="card-footer">
+                            <div class="price">Price: <span>₹32,999</span> / person</div>
+                            <div class="card-actions">
+                                <button class="btn-wishlist" onclick="toggleWishlist('Rajasthan Royal Tour', event)">❤️</button>
+                                <button class="btn-outline" onclick="openBookingModal('Rajasthan Royal Tour', 32999)">Book Now</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Package 5: Ladakh -->
+                <div class="destination-card" data-region="north" data-type="adventure" data-price="35999">
+                    <div class="card-img-wrapper">
+                        <img src="images/ladakh_real.jpg" alt="Ladakh Pangong Tso Lake" loading="lazy">
+                        <span class="card-tag">High Altitude Thrill</span>
+                        <div class="card-rating">★ 4.9 (310 reviews)</div>
+                    </div>
+                    <div class="card-body">
+                        <span class="card-location">North India • 7 Days / 6 Nights</span>
+                        <h3 class="card-title">Ladakh High Pass Expedition</h3>
+                        <p class="card-desc">Leh Palace, Khardung La pass drive, Nubra valley double-hump camel safari, and luxury glamping at Pangong Tso Lake.</p>
+                        <div class="card-footer">
+                            <div class="price">Price: <span>₹35,999</span> / person</div>
+                            <div class="card-actions">
+                                <button class="btn-wishlist" onclick="toggleWishlist('Ladakh Adventure', event)">❤️</button>
+                                <button class="btn-outline" onclick="openBookingModal('Ladakh Adventure', 35999)">Book Now</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Package 6: Andaman -->
+                <div class="destination-card" data-region="islands" data-type="honeymoon luxury" data-price="29999">
+                    <div class="card-img-wrapper">
+                        <img src="images/andaman_real.jpg" alt="Andaman Havelock Beach" loading="lazy">
+                        <span class="card-tag">Island Paradise</span>
+                        <div class="card-rating">★ 5.0 (470 reviews)</div>
+                    </div>
+                    <div class="card-body">
+                        <span class="card-location">Islands • 5 Days / 4 Nights</span>
+                        <h3 class="card-title">Andaman Scuba & Island Escape</h3>
+                        <p class="card-desc">Port Blair Cellular Jail light show, Havelock Radhanagar beach, scuba diving in Elephant Beach, and Makruzz cruise.</p>
+                        <div class="card-footer">
+                            <div class="price">Price: <span>₹29,999</span> / person</div>
+                            <div class="card-actions">
+                                <button class="btn-wishlist" onclick="toggleWishlist('Andaman Holiday', event)">❤️</button>
+                                <button class="btn-outline" onclick="openBookingModal('Andaman Holiday', 29999)">Book Now</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Regional Destinations Explorer -->
+    <section class="section destinations-section" id="destinations">
+        <div class="container">
+            <div class="section-header text-center">
+                <span class="badge">REGIONAL DESTINATIONS</span>
+                <h2>Explore India by Region</h2>
+                <p>From snow-capped Himalayan peaks to tropical islands and sun-drenched fortresses.</p>
+            </div>
+
+            <!-- Regional Filter Tabs -->
+            <div class="filter-tabs">
+                <button class="tab-btn active" onclick="setRegionTab('all', event)">All India</button>
+                <button class="tab-btn" onclick="setRegionTab('north', event)">North India</button>
+                <button class="tab-btn" onclick="setRegionTab('south', event)">South India</button>
+                <button class="tab-btn" onclick="setRegionTab('west', event)">West India</button>
+                <button class="tab-btn" onclick="setRegionTab('east', event)">East India</button>
+                <button class="tab-btn" onclick="setRegionTab('islands', event)">Islands</button>
+            </div>
+
+            <div class="region-cards-grid">
+                <!-- North -->
+                <div class="region-info-card" data-region="north" onclick="showDestinationDetails('Kashmir')">
+                    <span class="region-badge">North India</span>
+                    <h3>Kashmir & Ladakh</h3>
+                    <p>Best Season: Oct – Apr (Snow) / May – Sep (Pleasant)<br>Est. Budget: ₹18,000 – ₹45,000/person</p>
+                    <span class="view-link">View Destination Details &rarr;</span>
+                </div>
+                <!-- South -->
+                <div class="region-info-card" data-region="south" onclick="showDestinationDetails('Kerala')">
+                    <span class="region-badge">South India</span>
+                    <h3>Kerala & Tamil Nadu</h3>
+                    <p>Best Season: Sep – Mar<br>Est. Budget: ₹15,000 – ₹38,000/person</p>
+                    <span class="view-link">View Destination Details &rarr;</span>
+                </div>
+                <!-- West -->
+                <div class="region-info-card" data-region="west" onclick="showDestinationDetails('Rajasthan')">
+                    <span class="region-badge">West India</span>
+                    <h3>Rajasthan & Goa</h3>
+                    <p>Best Season: Oct – Mar<br>Est. Budget: ₹14,000 – ₹50,000/person</p>
+                    <span class="view-link">View Destination Details &rarr;</span>
+                </div>
+                <!-- East -->
+                <div class="region-info-card" data-region="east" onclick="showDestinationDetails('Sikkim')">
+                    <span class="region-badge">East India</span>
+                    <h3>Sikkim & Meghalaya</h3>
+                    <p>Best Season: Mar – Jun / Oct – Dec<br>Est. Budget: ₹16,000 – ₹32,000/person</p>
+                    <span class="view-link">View Destination Details &rarr;</span>
+                </div>
+                <!-- Islands -->
+                <div class="region-info-card" data-region="islands" onclick="showDestinationDetails('Andaman')">
+                    <span class="region-badge">Islands</span>
+                    <h3>Andaman & Lakshadweep</h3>
+                    <p>Best Season: Oct – May<br>Est. Budget: ₹25,000 – ₹60,000/person</p>
+                    <span class="view-link">View Destination Details &rarr;</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="section experiences-section" id="experiences">
+        <div class="container">
+            <div class="section-header text-center">
+                <span class="badge">PREMIUM SERVICES</span>
+                <h2>End-to-End Travel Concierge</h2>
+                <p>We handle every travel requirement so you enjoy a hassle-free vacation.</p>
+            </div>
+
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">🏨</div>
+                    <h3>Luxury Hotel & Palace Booking</h3>
+                    <p>Handpicked 5-star heritage palaces, boutique resorts, and private pool villas at exclusive rates.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">✈️</div>
+                    <h3>Flight & Charter Bookings</h3>
+                    <p>Domestic flights, VIP airport lounges, and private helicopter charters to hill sanctuaries.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🚆</div>
+                    <h3>Vistadome & Heritage Trains</h3>
+                    <p>Confirmed Luxury Train reservations including Maharajas' Express and mountain Vistadome trains.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🚗</div>
+                    <h3>Luxury Chauffeur Cabs</h3>
+                    <p>Sanitized private SUVs and luxury coaches with experienced English & Hindi speaking chauffeurs.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🧑‍🌾</div>
+                    <h3>Expert Local Guides</h3>
+                    <p>Certified government tourist historians and fluent local guides for authentic immersive storytelling.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🐘</div>
+                    <h3>Wildlife Safaris & Adventure</h3>
+                    <p>Priority VIP jeep safaris at Ranthambore, Jim Corbett, and Kaziranga National Parks.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Tools & AI Planner Section -->
+    <section class="section tools-section" id="tools">
+        <div class="container">
+            <div class="section-header text-center">
+                <span class="badge">INTERACTIVE TOOLS</span>
+                <h2>AI Trip Planner & Budget Calculator</h2>
+                <p>Plan your custom Indian itinerary in seconds using smart algorithms.</p>
+            </div>
+
+            <div class="tools-grid">
+                <!-- AI Planner Card -->
+                <div class="tool-box">
+                    <h3>🤖 AI Itinerary Generator</h3>
+                    <p>Generate a day-by-day customized travel plan based on your preferences.</p>
+                    
+                    <div class="tool-inputs">
+                        <select id="aiDest">
+                            <option value="Kashmir">Kashmir (Mountains & Lakes)</option>
+                            <option value="Kerala">Kerala (Backwaters & Tea)</option>
+                            <option value="Rajasthan">Rajasthan (Palaces & Forts)</option>
+                            <option value="Goa">Goa (Beaches & Nightlife)</option>
+                            <option value="Ladakh">Ladakh (Adventure & Pass)</option>
+                        </select>
+                        <select id="aiDays">
+                            <option value="3">3 Days Escape</option>
+                            <option value="5" selected>5 Days Signature</option>
+                            <option value="7">7 Days Grand Tour</option>
+                        </select>
+                        <select id="aiVibe">
+                            <option value="Luxury">Royal Luxury</option>
+                            <option value="Honeymoon">Honeymoon & Romantic</option>
+                            <option value="Adventure">Adventure & Trekking</option>
+                        </select>
+                        <button class="btn-primary" onclick="generateAIPlan()">Generate AI Plan</button>
+                    </div>
+
+                    <div id="aiResult" class="tool-result"></div>
+                </div>
+
+                <!-- Budget Calculator Card -->
+                <div class="tool-box">
+                    <h3>🧮 Indian Travel Budget Calculator</h3>
+                    <p>Estimate per-person expenditure including stays, transfers, and food.</p>
+                    
+                    <div class="tool-inputs">
+                        <label for="calcTravelers">Number of Travelers:</label>
+                        <input type="number" id="calcTravelers" value="2" min="1" max="20">
+
+                        <label for="calcDays">Duration (Days):</label>
+                        <input type="number" id="calcDays" value="5" min="1" max="30">
+
+                        <label for="calcCategory">Hotel Tier:</label>
+                        <select id="calcCategory">
+                            <option value="3000">Standard 3-Star (₹3,000/night)</option>
+                            <option value="6000" selected>Deluxe 4-Star (₹6,000/night)</option>
+                            <option value="12000">Royal 5-Star Heritage (₹12,000/night)</option>
+                        </select>
+
+                        <button class="btn-primary" onclick="calculateBudget()">Calculate Total Cost</button>
+                    </div>
+
+                    <div id="calcResult" class="tool-result"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us Section -->
+    <section class="section why-aura-section" id="about">
+        <div class="container">
+            <div class="why-aura-wrapper">
+                <div class="why-aura-header text-center">
+                    <span class="badge">WHY CHOOSE US</span>
+                    <h2>The Royal Trails Promise</h2>
+                    <p>India's premier luxury boutique agency dedicated to creating authentic, seamless travel memories.</p>
+                </div>
+
+                <div class="pillars-grid">
+                    <div class="pillar-card">
+                        <div class="pillar-number">01</div>
+                        <h3>Handcrafted Local Access</h3>
+                        <p>Private palace dinners with former royal families and exclusive boat access to remote islands.</p>
+                    </div>
+                    <div class="pillar-card">
+                        <div class="pillar-number">02</div>
+                        <h3>100% Price & Quality Guarantee</h3>
+                        <p>No hidden charges, guaranteed 4-Star / 5-Star accommodations, and verified private vehicles.</p>
+                    </div>
+                    <div class="pillar-card">
+                        <div class="pillar-number">03</div>
+                        <h3>24/7 Dedicated Ground Host</h3>
+                        <p>A dedicated local relationship manager assigned to your tour from arrival to departure airport.</p>
+                    </div>
+                    <div class="pillar-card">
+                        <div class="pillar-number">04</div>
+                        <h3>Instant PDF Itineraries</h3>
+                        <p>Download structured digital vouchers and day-wise maps directly to your mobile device.</p>
+                    </div>
+                </div>
+
+                <!-- Stats Highlight Banner -->
+                <div class="stats-banner">
+                    <div class="stat-item">
+                        <div class="stat-number">15,000+</div>
+                        <div class="stat-label">Happy Travelers</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">28</div>
+                        <div class="stat-label">Indian States Covered</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">4.9 ★</div>
+                        <div class="stat-label">Verified Guest Rating</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">100%</div>
+                        <div class="stat-label">Verified Luxury Stays</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Travel Blog & Guides Section -->
+    <section class="section blog-section" id="blog">
+        <div class="container">
+            <div class="section-header text-center">
+                <span class="badge">INSIDER KNOWLEDGE</span>
+                <h2>India Travel Guides & Tips</h2>
+                <p>Curated advice from our local travel experts before you pack your bags.</p>
+            </div>
+
+            <div class="blog-grid">
+                <article class="blog-card" onclick="alert('Opening Kashmir Travel Guide...')">
+                    <div class="blog-tag">North India</div>
+                    <h3>Best Time to Visit Kashmir: Snow vs Blossom Season</h3>
+                    <p>Learn when to experience Sonamarg snow sports versus Gulmarg green tulip gardens.</p>
+                </article>
+                <article class="blog-card" onclick="alert('Opening Goa Budget Guide...')">
+                    <div class="blog-tag">West India</div>
+                    <h3>Goa Luxury & Budget Guide 2026</h3>
+                    <p>Where to find private beaches in South Goa away from noisy commercial crowds.</p>
+                </article>
+                <article class="blog-card" onclick="alert('Opening Kerala Food Guide...')">
+                    <div class="blog-tag">Culinary</div>
+                    <h3>Authentic Kerala Spice & Seafood Food Guide</h3>
+                    <p>Top traditional Sadhya feasts and backwater Toddy shop dining experiences.</p>
+                </article>
+                <article class="blog-card" onclick="alert('Opening Ladakh Packing List...')">
+                    <div class="blog-tag">Adventure</div>
+                    <h3>Essential Ladakh Packing List & Oxygen Tips</h3>
+                    <p>How to acclimatize properly in Leh and gear needed for Pangong Tso night camps.</p>
+                </article>
+                <article class="blog-card" onclick="alert('Opening Rajasthan Travel Tips...')">
+                    <div class="blog-tag">Culture</div>
+                    <h3>Rajasthan Royal Forts & Palace Etiquette Tips</h3>
+                    <p>Insider tricks for photogenic sunrise angles at Amber Fort and Lake Pichola.</p>
+                </article>
+                <article class="blog-card" onclick="alert('Opening Honeymoon Guide...')">
+                    <div class="blog-tag">Honeymoon ❤️</div>
+                    <h3>Top 5 Romantic Honeymoon Destinations in India</h3>
+                    <p>Comparing Kashmir houseboats, Alleppey backwaters, and Udaipur lake palaces.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials / Customer Reviews -->
+    <section class="section testimonials-section" id="testimonials">
+        <div class="container">
+            <div class="section-header text-center">
+                <span class="badge">REAL EXPERIENCES</span>
+                <h2>Guest Memoirs & Reviews</h2>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="stars">★★★★★</div>
+                    <p class="quote">"Royal Trails India made our Kashmir honeymoon magical. The houseboat in Dal Lake was like living in a luxury floating palace!"</p>
+                    <div class="author">
+                        <strong>Rahul & Priya Sharma</strong>
+                        <span>New Delhi • Kashmir Paradise</span>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="stars">★★★★★</div>
+                    <p class="quote">"The Kerala backwaters houseboat and Munnar tea plantation stay were organized with perfection. Private cab driver was extremely helpful."</p>
+                    <div class="author">
+                        <strong>Anand Kulkarni</strong>
+                        <span>Bengaluru • Kerala Backwaters</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact & Consultation Section -->
+    <section class="section contact-section" id="contact">
+        <div class="container">
+            <div class="contact-card">
+                <div class="contact-info">
+                    <span class="badge">START PLANNING</span>
+                    <h2>Plan Your Custom Indian Holiday</h2>
+                    <p>Talk to our India destination specialists for instant quotes and custom itineraries.</p>
+                    <div class="contact-details">
+                        <div class="detail-item">
+                            <span>📍 Offices:</span> Connaught Place, New Delhi & Bandra, Mumbai
+                        </div>
+                        <div class="detail-item">
+                            <span>📞 Direct Line:</span> +91 98765 43210 / +91 11 2345 6789
+                        </div>
+                        <div class="detail-item">
+                            <span>✉️ Email:</span> concierge@royaltrailsindia.com
+                        </div>
+                        <div class="detail-item">
+                            <span>💬 WhatsApp:</span> <a href="https://wa.me/919876543210" target="_blank" style="color:#25D366; font-weight:bold;">Chat on WhatsApp Direct &rarr;</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <form id="contactForm" class="contact-form" onsubmit="handleFormSubmit(event)">
+                    <h3>Request Custom Tour Quote</h3>
+                    
+                    <div class="form-group">
+                        <label for="name">Your Name</label>
+                        <input type="text" id="name" name="name" placeholder="e.g. Vikramaditya Singh" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Phone / WhatsApp Number</label>
+                        <input type="text" id="email" name="email" placeholder="+91 98765 43210" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="destination">Target Destination</label>
+                        <select id="destination" name="destination">
+                            <option value="Kashmir">Kashmir</option>
+                            <option value="Kerala">Kerala</option>
+                            <option value="Goa">Goa</option>
+                            <option value="Rajasthan">Rajasthan</option>
+                            <option value="Ladakh">Ladakh</option>
+                            <option value="Andaman">Andaman Islands</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">Travel Dates & Guest Count</label>
+                        <textarea id="message" name="message" rows="3" placeholder="Number of adults/children, tentative travel month..." required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-primary full-width">Send Booking Request</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-brand">
+                <a href="#" class="logo"><span class="logo-accent">BOUTIQUE</span> TRAVEL AGENCY</a>
+                <p>Promoting Incredible India domestic luxury travel with authentic hospitality, royal stays, and zero hassle.</p>
+            </div>
+            <div class="footer-links">
+                <h4>Quick Explore</h4>
+                <a href="#packages">Popular Packages</a>
+                <a href="#destinations">Regional Destinations</a>
+                <a href="#tools">AI Trip Planner</a>
+                <a href="#blog">Travel Guides</a>
+            </div>
+            <div class="footer-newsletter">
+                <h4>Royal Travel Club</h4>
+                <p>Get exclusive early-bird discounts and seasonal package releases.</p>
+                <div class="newsletter-box">
+                    <input type="email" placeholder="Enter your email">
+                    <button class="btn-primary" onclick="alert('Welcome to Boutique Travel Agency Club!')">Join Club</button>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 BOUTIQUE TRAVEL AGENCY. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <!-- Booking Modal -->
+    <div class="modal-backdrop" id="modalBackdrop" onclick="closeBookingModal(event)">
+        <div class="modal" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeBookingModal(event)">&times;</button>
+            <h3 id="modalTitle">Book Package</h3>
+            <p id="modalSub">Instant confirmation inquiry with guaranteed price lock.</p>
+            
+            <form onsubmit="handleModalSubmit(event)" class="modal-form">
+                <input type="hidden" id="modalDestInput">
+                <div class="form-group">
+                    <label for="modalName">Full Name</label>
+                    <input type="text" id="modalName" required placeholder="Name">
+                </div>
+                <div class="form-group">
+                    <label for="modalPhone">Phone / WhatsApp</label>
+                    <input type="tel" id="modalPhone" required placeholder="+91 XXXXX XXXXX">
+                </div>
+                <div class="form-group">
+                    <label for="modalGuests">Number of Guests</label>
+                    <input type="number" id="modalGuests" value="2" min="1">
+                </div>
+                <button type="submit" class="btn-primary full-width">Confirm Booking Request</button>
+                <button type="button" class="btn-outline full-width" style="margin-top:0.5rem" onclick="downloadPDFItinerary()">📥 Download PDF Itinerary</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Auth Modal (OTP / Password / Register) -->
+    <div class="modal-backdrop" id="authModalBackdrop" onclick="closeAuthModal(event)">
+        <div class="modal" onclick="event.stopPropagation()" style="max-width:440px;">
+            <button class="modal-close" onclick="closeAuthModal(event)">&times;</button>
+            
+            <div class="auth-tabs">
+                <button class="auth-tab-btn active" id="tabOtpBtn" onclick="switchAuthTab('otp')">📱 OTP Login</button>
+                <button class="auth-tab-btn" id="tabLoginBtn" onclick="switchAuthTab('login')">🔑 Password</button>
+                <button class="auth-tab-btn" id="tabRegBtn" onclick="switchAuthTab('register')">👤 Register</button>
+            </div>
+
+            <!-- OTP Login Form -->
+            <div id="otpFormSec" class="auth-sec">
+                <h3>OTP Quick Login</h3>
+                <p>Enter your 10-digit Indian mobile number for instant OTP access.</p>
+                <form onsubmit="handleRequestOTP(event)">
+                    <div class="form-group">
+                        <label for="otpPhone">Mobile Number</label>
+                        <input type="tel" id="otpPhone" placeholder="+91 98765 43210" required>
+                    </div>
+                    <button type="submit" class="btn-primary full-width">Send 6-Digit OTP</button>
+                </form>
+                
+                <form id="verifyOtpSec" style="display:none; margin-top:1.2rem;" onsubmit="handleVerifyOTP(event)">
+                    <div class="form-group">
+                        <label for="otpCode">Enter 6-Digit Verification Code</label>
+                        <input type="text" id="otpCode" placeholder="123456" maxlength="6" required style="letter-spacing:6px; font-size:1.3rem; text-align:center; font-weight:bold; color:#D4AF37;">
+                    </div>
+                    <button type="submit" class="btn-primary full-width">Verify & Login</button>
+                </form>
+            </div>
+
+            <!-- Password Login Form -->
+            <div id="loginFormSec" class="auth-sec" style="display:none;">
+                <h3>Account Login</h3>
+                <p>Sign in with your email and password.</p>
+                <form onsubmit="handlePasswordLogin(event)">
+                    <div class="form-group">
+                        <label for="loginEmail">Email Address</label>
+                        <input type="email" id="loginEmail" placeholder="user@gmail.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPass">Password</label>
+                        <input type="password" id="loginPass" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit" class="btn-primary full-width">Sign In</button>
+                </form>
+            </div>
+
+            <!-- Registration Form -->
+            <div id="regFormSec" class="auth-sec" style="display:none;">
+                <h3>Create Account</h3>
+                <p>Your wishlist and bookings will be saved forever in our SQLite database.</p>
+                <form onsubmit="handleRegister(event)">
+                    <div class="form-group">
+                        <label for="regName">Full Name</label>
+                        <input type="text" id="regName" placeholder="Rahul Sharma" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="regEmail">Email Address</label>
+                        <input type="email" id="regEmail" placeholder="rahul@gmail.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="regPhone">Mobile Number</label>
+                        <input type="tel" id="regPhone" placeholder="+91 98765 43210" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="regPass">Create Password</label>
+                        <input type="password" id="regPass" placeholder="At least 6 characters" minlength="6" required>
+                    </div>
+                    <button type="submit" class="btn-primary full-width">Register Account</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Dashboard Modal -->
+    <div class="modal-backdrop" id="dashboardBackdrop" onclick="closeDashboardModal(event)">
+        <div class="modal" onclick="event.stopPropagation()" style="max-width:620px;">
+            <button class="modal-close" onclick="closeDashboardModal(event)">&times;</button>
+            <h3>👤 Account Dashboard</h3>
+            <p>Welcome, <strong id="dashUserName" style="color:#D4AF37;">Guest</strong>! All your data is saved forever.</p>
+            
+            <div class="dashboard-tabs">
+                <div class="dash-sec">
+                    <h4>❤️ Saved Wishlist (<span id="wishlistCount">0</span>)</h4>
+                    <ul id="wishlistItemsList" class="dash-list">
+                        <li>No items in wishlist yet. Click ❤️ on any tour package.</li>
+                    </ul>
+                </div>
+                <div class="dash-sec" style="margin-top:1.5rem;">
+                    <h4>📋 Your Active Bookings</h4>
+                    <ul id="bookingsList" class="dash-list">
+                        <li>No active bookings found. Book a tour package to save it here.</li>
+                    </ul>
+                </div>
+                <button class="btn-outline full-width" style="margin-top:1.8rem; border-color:#FF5A5F; color:#FF5A5F;" onclick="handleLogout()">🚪 Logout Account</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
