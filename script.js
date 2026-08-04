@@ -315,12 +315,13 @@ function updateBookingsUI() {
 // Contact Form Handler - Sends Email directly to moulikumar2082@gmail.com
 async function handleFormSubmit(event) {
     event.preventDefault();
-    const name = document.getElementById('name').value.trim();
-    const phone = document.getElementById('email').value.trim();
-    const destination = document.getElementById('destination').value;
-    const message = document.getElementById('message').value.trim();
+    const name = document.getElementById('quoteName').value.trim();
+    const phone = document.getElementById('quotePhone').value.trim();
+    const email = document.getElementById('quoteEmail').value.trim();
+    const destination = document.getElementById('quoteDestination').value;
+    const message = document.getElementById('quoteMessage').value.trim();
 
-    showToast(`Sending custom quote request...`);
+    showToast(`Sending custom quote request for ${name}...`);
 
     // 1. Dispatch real email notification to moulikumar2082@gmail.com via FormSubmit API
     try {
@@ -334,8 +335,10 @@ async function handleFormSubmit(event) {
                 _subject: `New Custom Tour Quote Request from ${name}`,
                 "Customer Name": name,
                 "Phone / WhatsApp": phone,
+                "Customer Email": email,
                 "Target Destination": destination,
                 "Travel Dates & Details": message,
+                "_captcha": "false",
                 "_template": "table"
             })
         });
@@ -346,7 +349,7 @@ async function handleFormSubmit(event) {
         await fetch('/api/submit-inquiry', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name, phone, destination, message })
+            body: JSON.stringify({ name, phone, email, destination, message })
         });
     } catch (err) {}
 
@@ -507,6 +510,13 @@ function openBookingModal(destinationTitle, price = 25000) {
     modalTitle.textContent = `Book: ${destinationTitle}`;
     modalDestInput.value = destinationTitle;
     modalDestInput.setAttribute('data-price', price);
+
+    if (currentUser) {
+        const modalName = document.getElementById('modalName');
+        const modalPhone = document.getElementById('modalPhone');
+        if (modalName && currentUser.name) modalName.value = currentUser.name;
+        if (modalPhone && currentUser.phone) modalPhone.value = currentUser.phone;
+    }
 
     modalBackdrop.classList.add('active');
     document.body.style.overflow = 'hidden';

@@ -552,18 +552,23 @@
                     <h3>Request Custom Tour Quote</h3>
                     
                     <div class="form-group">
-                        <label for="name">Your Name</label>
-                        <input type="text" id="name" name="name" placeholder="e.g. Vikramaditya Singh" required>
+                        <label for="quoteName">Your Name</label>
+                        <input type="text" id="quoteName" name="name" placeholder="e.g. Vikramaditya Singh" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="email">Phone / WhatsApp Number</label>
-                        <input type="text" id="email" name="email" placeholder="+91 98765 43210" required>
+                        <label for="quotePhone">Phone / WhatsApp Number</label>
+                        <input type="tel" id="quotePhone" name="phone" placeholder="+91 98765 43210" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="destination">Target Destination</label>
-                        <select id="destination" name="destination">
+                        <label for="quoteEmail">Email Address</label>
+                        <input type="email" id="quoteEmail" name="email" placeholder="singh@luxury.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="quoteDestination">Target Destination</label>
+                        <select id="quoteDestination" name="destination">
                             <option value="Kashmir">Kashmir</option>
                             <option value="Kerala">Kerala</option>
                             <option value="Goa">Goa</option>
@@ -574,8 +579,8 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="message">Travel Dates & Guest Count</label>
-                        <textarea id="message" name="message" rows="3" placeholder="Number of adults/children, tentative travel month..." required></textarea>
+                        <label for="quoteMessage">Travel Dates & Guest Count</label>
+                        <textarea id="quoteMessage" name="message" rows="3" placeholder="Number of adults/children, tentative travel month..." required></textarea>
                     </div>
 
                     <button type="submit" class="btn-primary full-width">Send Booking Request</button>
