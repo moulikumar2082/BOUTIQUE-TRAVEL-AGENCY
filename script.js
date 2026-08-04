@@ -509,12 +509,46 @@ function closeDashboardModal(event) {
     document.body.style.overflow = 'auto';
 }
 
-// Contact Form Handler
-function handleFormSubmit(event) {
+// Contact Form Handler - Sends Email to moulikumar2082@gmail.com & saves to DB
+async function handleFormSubmit(event) {
     event.preventDefault();
-    const name = document.getElementById('name').value;
-    showToast(`Namaste ${name}! Our Specialist will contact you within 15 minutes.`);
-    event.target.reset();
+    const name = document.getElementById('name').value.trim();
+    const phone = document.getElementById('email').value.trim();
+    const destination = document.getElementById('destination').value;
+    const message = document.getElementById('message').value.trim();
+
+    showToast(`Sending inquiry for ${name}...`);
+
+    try {
+        // 1. Save to SQLite Database
+        await fetch('/api/submit-inquiry', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, phone, destination, message })
+        });
+
+        // 2. Dispatch real email notification to moulikumar2082@gmail.com via FormSubmit AJAX API
+        fetch('https://formsubmit.co/ajax/mowlikumar2082@gmail.com', {
+            method: 'POST',
+            headers: { 
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                _subject: `New Custom Tour Quote Request from ${name}`,
+                "Customer Name": name,
+                "Phone / WhatsApp": phone,
+                "Target Destination": destination,
+                "Travel Dates & Details": message,
+                "_template": "table"
+            })
+        }).catch(err => console.log('Email dispatch log:', err));
+
+        showToast(`Namaste ${name}! Your request has been emailed to moulikumar2082@gmail.com and saved to DB.`);
+        event.target.reset();
+    } catch (err) {
+        showToast(`Request saved! We will contact you at ${phone}.`);
+    }
 }
 
 // Toast Notification

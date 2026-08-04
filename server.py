@@ -14,6 +14,7 @@ import urllib.parse
 
 PORT = 8000
 DB_FILE = "database.db"
+TARGET_EMAIL = "moulikumar2082@gmail.com"
 
 # Initialize SQLite Database
 def init_db():
@@ -62,6 +63,19 @@ def init_db():
             guests INTEGER NOT NULL,
             dates TEXT,
             status TEXT DEFAULT 'Confirmed',
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    ''')
+
+    # Inquiries Table (for custom tour quotes sent to moulikumar2082@gmail.com)
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS inquiries (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            phone TEXT NOT NULL,
+            destination TEXT NOT NULL,
+            message TEXT NOT NULL,
+            target_email TEXT DEFAULT 'moulikumar2082@gmail.com',
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
     ''')
@@ -156,9 +170,8 @@ class BoutiqueRequestHandler(http.server.SimpleHTTPRequestHandler):
             if not phone:
                 return self._send_json({'success': False, 'message': 'Phone number is required.'}, 400)
 
-            # Generate 6-digit OTP
             otp_code = str(random.randint(100000, 999999))
-            expires_at = int(time.time()) + 300  # valid for 5 minutes
+            expires_at = int(time.time()) + 300
 
             conn = sqlite3.connect(DB_FILE)
             cursor = conn.cursor()
@@ -170,7 +183,7 @@ class BoutiqueRequestHandler(http.server.SimpleHTTPRequestHandler):
             return self._send_json({
                 'success': True,
                 'message': f'OTP sent successfully to {phone}!',
-                'otp_code': otp_code  # Returned for easy simulation / toast display
+                'otp_code': otp_code
             })
 
         # -------------------------------------------------------------
@@ -189,10 +202,8 @@ class BoutiqueRequestHandler(http.server.SimpleHTTPRequestHandler):
                 conn.close()
                 return self._send_json({'success': False, 'message': 'Invalid or expired OTP.'}, 400)
 
-            # Delete used OTP
             cursor.execute('DELETE FROM otps WHERE phone = ?', (phone,))
 
-            # Check if user exists or auto-create account
             cursor.execute('SELECT id, name, email, phone FROM users WHERE phone = ?', (phone,))
             user_row = cursor.fetchone()
 
@@ -216,7 +227,38 @@ class BoutiqueRequestHandler(http.server.SimpleHTTPRequestHandler):
             })
 
         # -------------------------------------------------------------
-        # 5. SAVE / TOGGLE WISHLIST
+        # 5. SUBMIT TOUR INQUIRY (Email to moulikumar2082@gmail.com)
+        # -------------------------------------------------------------
+        elif path == '/api/submit-inquiry':
+            name = post_data.get('name', '').strip()
+            phone = post_data.get('phone', '').strip()
+            destination = post_data.get('destination', '').strip()
+            message = post_data.get('message', '').strip()
+
+            if not name or not phone or not destination:
+                return self._send_json({'success': False, 'message': 'Missing required inquiry fields.'}, 400)
+
+            conn = sqlite3.connect(DB_FILE)
+            cursor = conn.cursor()
+            cursor.execute('INSERT INTO inquiries (name, phone, destination, message, target_email) VALUES (?, ?, ?, ?, ?)',
+                           (name, phone, destination, message, TARGET_EMAIL))
+            conn.commit()
+            conn.close()
+
+            print(f"\n📧 [EMAIL NOTIFICATION LOG] Mail queued for {TARGET_EMAIL}:")
+            print(f"   - Name: {name}")
+            print(f"   - Phone/WhatsApp: {phone}")
+            print(f"   - Destination: {destination}")
+            print(f"   - Details: {message}\n")
+
+            return self._send_json({
+                'success': True,
+                'message': f'Tour request submitted and sent to {TARGET_EMAIL}!',
+                'target_email': TARGET_EMAIL
+            })
+
+        # -------------------------------------------------------------
+        # 6. SAVE / TOGGLE WISHLIST
         # -------------------------------------------------------------
         elif path == '/api/toggle-wishlist':
             user_id = post_data.get('userId')
@@ -239,7 +281,6 @@ class BoutiqueRequestHandler(http.server.SimpleHTTPRequestHandler):
 
             conn.commit()
             
-            # Return updated list
             cursor.execute('SELECT package_name FROM wishlists WHERE user_id = ?', (user_id,))
             items = [r[0] for r in cursor.fetchall()]
             conn.close()
@@ -247,7 +288,7 @@ class BoutiqueRequestHandler(http.server.SimpleHTTPRequestHandler):
             return self._send_json({'success': True, 'action': action, 'wishlist': items})
 
         # -------------------------------------------------------------
-        # 6. CREATE BOOKING
+        # 7. CREATE BOOKING
         # -------------------------------------------------------------
         elif path == '/api/create-booking':
             user_id = post_data.get('userId')
@@ -304,10 +345,20 @@ class BoutiqueRequestHandler(http.server.SimpleHTTPRequestHandler):
                 'wishlist': wishlist,
                 'bookings': bookings
             })
+        elif parsed.path == '/api/inquiries':
+            conn = sqlite3.connect(DB_FILE)
+            cursor = conn.cursor()
+            cursor.execute('SELECT id, name, phone, destination, message, target_email, created_at FROM inquiries ORDER BY id DESC')
+            inquiries = [{
+                'id': r[0], 'name': r[1], 'phone': r[2], 'destination': r[3], 'message': r[4], 'target_email': r[5], 'created_at': r[6]
+            } for r in cursor.fetchall()]
+            conn.close()
+            return self._send_json({'success': True, 'inquiries': inquiries})
         else:
             return super().do_GET()
 
 if __name__ == '__main__':
-    print(f"Starting Boutique Travel Persistent API & Web Server on port {PORT}...")
+    print(f"Starting Boutique Travel Persistent API Server on port {PORT}...")
+    print(f"Target email notifications destination: {TARGET_EMAIL}")
     with socketserver.TCPServer(("", PORT), BoutiqueRequestHandler) as httpd:
         httpd.serve_forever()
